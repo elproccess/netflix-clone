@@ -15,7 +15,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 import YoutubePlayer from "react-native-youtube-iframe";
 
-import { fetchKey } from "./services/api";
+import { fetchKey, fetchGenre } from "./services/api";
 
 import IconRow from "../components/IconRow";
 
@@ -24,6 +24,8 @@ const OverviewScreen = ({ navigation, route }) => {
   const [youtubeKey, setyoutubeKey] = useState("");
   const [playing, setPlaying] = useState(false);
 
+  const [genress, setGenres] = useState("");
+  let arr = [];
   let video = "";
   const togglrePlaying = useCallback(async () => {
     await fetch(
@@ -50,15 +52,31 @@ const OverviewScreen = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
+    console.log(route.params.item.genre_ids);
+
     fetchData()
       .then((employeees) => {
         const emp = JSON.stringify(employeees[0].key);
         setEmployees(emp.replace(/['"]+/g, ""));
-        console.log(employees + " GfbNLLcrItI");
+        console.log(emp + " GfbNLLcrItI");
       })
       .catch((err) => {
         console.log(err + " wtf");
       });
+
+    fetchGenre().then((genres) => {
+      const emp = JSON.stringify(genres);
+      console.log(emp);
+      genres.map((gen) => {
+        route.params.item.genre_ids.map((g) => {
+          if (gen.id == g) {
+            setGenres(gen.name);
+            arr.push(gen.name);
+            console.log(arr);
+          }
+        });
+      });
+    });
   }, []);
 
   const fetchData = async () => {
@@ -70,10 +88,6 @@ const OverviewScreen = ({ navigation, route }) => {
     const json = await res.json();
     const r = json.results;
     return json.results;
-  };
-
-  const getCustomerId = () => {
-    return video;
   };
 
   return (
@@ -156,8 +170,21 @@ const OverviewScreen = ({ navigation, route }) => {
               color="#D81120"
             />
           </View>
+
+          {arr.map((gen, index) => (
+            <View style={styles.rowContainer}>
+              <TouchableOpacity
+                style={styles.SubmitButtonStyle}
+                activeOpacity={0.5}
+                onPress={this.ButtonClickCheckFunction}
+              >
+                <Text style={styles.TextStyle}> {arr[0]} </Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+
           <Paragraph style={styles.paragraph}>
-            {route.params.item.overview}}
+            {route.params.item.overview}
           </Paragraph>
         </Card.Content>
         <Card.Actions></Card.Actions>
@@ -207,6 +234,21 @@ const styles = StyleSheet.create({
 
   paragraph: {
     color: "white",
+  },
+
+  SubmitButtonStyle: {
+    marginTop: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginLeft: 30,
+    marginRight: 30,
+    backgroundColor: "#D81120",
+    borderRadius: 10,
+  },
+
+  TextStyle: {
+    color: "#fff",
+    textAlign: "center",
   },
 });
 
