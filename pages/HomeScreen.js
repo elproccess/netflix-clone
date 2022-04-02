@@ -34,12 +34,16 @@ const HomeScreen = ({ navigation }) => {
   // Declare a new state variable, which we'll call "count"
   const [movies, setMovies] = useState([]);
   const [indexiu, setIndex] = useState(0);
+  const [latest, setLatest] = useState([]);
+  const [rated, setRated] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const onPress = () => setCount((prevCount) => setCount(prevCount + 1));
 
   useEffect(() => {
     fecthMovies();
+    fecthTrending();
+    fecthRated();
   }, []);
 
   let fecthMovies = () => {
@@ -52,6 +56,26 @@ const HomeScreen = ({ navigation }) => {
       .finally(() => setLoading(false));
   };
 
+  let fecthTrending = () => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/popular?api_key=1a24f47a1c3360e034c8cecab79575d9&language=en-US&page=1"
+    )
+      .then((response) => response.json())
+      .then((json) => setLatest(json.results))
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
+  };
+
+  let fecthRated = () => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=1a24f47a1c3360e034c8cecab79575d9&language=en-US&page=1"
+    )
+      .then((response) => response.json())
+      .then((json) => setRated(json.results))
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
+  };
+
   return isLoading ? (
     <ActivityIndicator />
   ) : (
@@ -60,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView>
         <Carousel
           ref={(c) => (this.carousel = c)}
-          data={movies}
+          data={rated}
           keyExtractor={({ id }, index) => index}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -90,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
           parentCallback={handleNavigation}
         />
         <FilmRow
-          props={movies}
+          props={latest}
           heading={"Popular on Netflix"}
           parentCallback={handleNavigation}
         />

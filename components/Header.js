@@ -14,13 +14,13 @@ const Header = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <Icon name="cc-paypal" size={30} color="#5A5B60" style={styles.icon} />
+        <Icon name="bars" size={30} color="#D81120" style={styles.icon} />
       </TouchableOpacity>
 
       <Image source={require("../netflix.png")} style={styles.image}></Image>
 
       <TouchableOpacity style={styles.icon}>
-        <Icon name="search" size={30} color="#5A5B60" />
+        <Icon name="search" size={30} color="#D81120" />
       </TouchableOpacity>
     </View>
   );
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   icon: {
     alignContent: "space-between",
     padding: 20,
-    color: "white",
+    color: "#D81120",
   },
 });
 

@@ -1,7 +1,8 @@
 import "react-native-get-random-values";
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, Button, ActivityIndicator } from "react-native";
+import { View, Button, ActivityIndicator, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
+import HeaderOverview from "../components/HeaderOverview";
 
 const YoutubePage = ({ navigation, route }) => {
   let { user } = route.params.user;
@@ -28,12 +29,27 @@ const YoutubePage = ({ navigation, route }) => {
   }, []);
 
   return (
-    <WebView
-      source={{
-        uri: "https://www.youtube.com/embed/" + a,
-      }}
-    />
+    <View style={styles.container}>
+      <HeaderOverview navigation={navigation} />
+      <WebView
+        source={{
+          uri: "https://www.youtube.com/embed/" + a,
+        }}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "100%",
+    paddingHorizontal: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingVertical: 0,
+    backgroundColor: "#0A0A0B",
+  },
+});
 
 export default YoutubePage;

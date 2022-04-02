@@ -18,6 +18,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { fetchKey, fetchGenre } from "./services/api";
 
 import IconRow from "../components/IconRow";
+import HeaderOverview from "../components/HeaderOverview";
 
 const OverviewScreen = ({ navigation, route }) => {
   const [employees, setEmployees] = useState([]);
@@ -92,6 +93,7 @@ const OverviewScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <HeaderOverview navigation={navigation} />
       <ImageBackground
         resizeMode={"cover"}
         style={styles.img}
